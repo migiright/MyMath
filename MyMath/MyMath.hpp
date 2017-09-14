@@ -1,4 +1,9 @@
-﻿#pragma once
+﻿/**
+* \file MyMath.hpp
+* \version 1.0
+*/
+
+#pragma once
 
 #include <array>
 #include <boost/format.hpp>
