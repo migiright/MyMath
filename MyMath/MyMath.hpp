@@ -8,7 +8,6 @@
 #include <array>
 #include <boost/format.hpp>
 #include <boost/operators.hpp>
-#include <boost/range.hpp>
 
 /**
 * @brief 行列 
