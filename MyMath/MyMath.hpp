@@ -216,4 +216,14 @@ Vector<LhsWidth> operator*(Vector<LhsHeight> lhs, Matrix<LhsHeight, LhsWidth> rh
 	return ret;
 }
 
+/// ベクトル同士の内積
+template<size_t Dimension>
+double dot(Vector<Dimension> lhs, Vector<Dimension> rhs) {
+	double ret = 0;
+	for (size_t i = 0; i < Dimension; i++) {
+		ret += lhs[i] * rhs[i];
+	}
+	return ret;
+}
+
 }

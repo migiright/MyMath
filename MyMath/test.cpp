@@ -23,6 +23,7 @@ int main()
 	auto av2 = v3 * m32; //横ベクトルと行列の積 2次元のベクトル
 	cout << av1.toString() << endl;
 	cout << av2.toString() << endl;
+	cout << dot(v3, v32) << endl; //ベクトル同士の内積
 
 	return 0;
 }
