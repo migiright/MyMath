@@ -190,7 +190,7 @@ struct Vector
 
 /// 行列*縦ベクトルの乗算
 template<size_t LhsHeight, size_t LhsWidth>
-Vector<LhsHeight> operator*(Matrix<LhsHeight, LhsWidth> lhs, Vector<LhsWidth> rhs)
+Vector<LhsHeight> operator*(const Matrix<LhsHeight, LhsWidth> &lhs, const Vector<LhsWidth> &rhs)
 {
 	Vector<LhsHeight> ret;
 	for (size_t i = 0; i < LhsHeight; i++) {
@@ -204,7 +204,7 @@ Vector<LhsHeight> operator*(Matrix<LhsHeight, LhsWidth> lhs, Vector<LhsWidth> rh
 
 /// 横ベクトル*行列の乗算
 template<size_t LhsHeight, size_t LhsWidth>
-Vector<LhsWidth> operator*(Vector<LhsHeight> lhs, Matrix<LhsHeight, LhsWidth> rhs)
+Vector<LhsWidth> operator*(const Vector<LhsHeight> &lhs, const Matrix<LhsHeight, LhsWidth> &rhs)
 {
 	Vector<LhsWidth> ret;
 	for (size_t i = 0; i < LhsWidth; i++) {
@@ -218,7 +218,7 @@ Vector<LhsWidth> operator*(Vector<LhsHeight> lhs, Matrix<LhsHeight, LhsWidth> rh
 
 /// ベクトル同士の内積
 template<size_t Dimension>
-double dot(Vector<Dimension> lhs, Vector<Dimension> rhs) {
+double dot(const Vector<Dimension> &lhs, const Vector<Dimension> &rhs) {
 	double ret = 0;
 	for (size_t i = 0; i < Dimension; i++) {
 		ret += lhs[i] * rhs[i];
