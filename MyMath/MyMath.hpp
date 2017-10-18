@@ -9,6 +9,8 @@
 #include <boost/format.hpp>
 #include <boost/operators.hpp>
 
+namespace MyMath {
+
 /**
 * @brief 行列 
 * @tparam H 行数
@@ -212,4 +214,6 @@ Vector<LhsWidth> operator*(Vector<LhsHeight> lhs, Matrix<LhsHeight, LhsWidth> rh
 		}
 	}
 	return ret;
+}
+
 }

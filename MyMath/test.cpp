@@ -2,6 +2,7 @@
 #include "MyMath.hpp"
 
 using namespace std;
+using namespace MyMath;
 
 int main()
 {
