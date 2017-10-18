@@ -1,6 +1,6 @@
 ﻿/**
 * \file MyMath.hpp
-* \version 1.0
+* \version 1.1
 */
 
 #pragma once
@@ -8,7 +8,8 @@
 #include <array>
 #include <boost/format.hpp>
 #include <boost/operators.hpp>
-#include <boost/range.hpp>
+
+namespace MyMath {
 
 /**
 * @brief 行列 
@@ -203,14 +204,26 @@ Vector<LhsHeight> operator*(Matrix<LhsHeight, LhsWidth> lhs, Vector<LhsWidth> rh
 
 /// 横ベクトル*行列の乗算
 template<size_t LhsHeight, size_t LhsWidth>
-Vector<LhsWidth> operator*(Vector<LhsHeight> rhs, Matrix<LhsHeight, LhsWidth> lhs)
+Vector<LhsWidth> operator*(Vector<LhsHeight> lhs, Matrix<LhsHeight, LhsWidth> rhs)
 {
 	Vector<LhsWidth> ret;
 	for (size_t i = 0; i < LhsWidth; i++) {
 		ret[i] = 0;
 		for (size_t j = 0; j < LhsHeight; j++) {
-			ret[i] += rhs[j] * lhs(j, i);
+			ret[i] += lhs[j] * rhs(j, i);
 		}
 	}
 	return ret;
+}
+
+/// ベクトル同士の内積
+template<size_t Dimension>
+double dot(Vector<Dimension> lhs, Vector<Dimension> rhs) {
+	double ret = 0;
+	for (size_t i = 0; i < Dimension; i++) {
+		ret += lhs[i] * rhs[i];
+	}
+	return ret;
+}
+
 }
