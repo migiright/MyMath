@@ -203,13 +203,13 @@ Vector<LhsHeight> operator*(Matrix<LhsHeight, LhsWidth> lhs, Vector<LhsWidth> rh
 
 /// 横ベクトル*行列の乗算
 template<size_t LhsHeight, size_t LhsWidth>
-Vector<LhsWidth> operator*(Vector<LhsHeight> rhs, Matrix<LhsHeight, LhsWidth> lhs)
+Vector<LhsWidth> operator*(Vector<LhsHeight> lhs, Matrix<LhsHeight, LhsWidth> rhs)
 {
 	Vector<LhsWidth> ret;
 	for (size_t i = 0; i < LhsWidth; i++) {
 		ret[i] = 0;
 		for (size_t j = 0; j < LhsHeight; j++) {
-			ret[i] += rhs[j] * lhs(j, i);
+			ret[i] += lhs[j] * rhs(j, i);
 		}
 	}
 	return ret;
