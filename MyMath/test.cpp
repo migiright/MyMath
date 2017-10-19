@@ -26,5 +26,35 @@ int main()
 	cout << dot(v3, v32) << endl; //ベクトル同士の内積
 	cout << norm(v3) << endl; //ノルム
 
+	//ベクトル値関数のヤコビアン
+	{
+		auto f = [](Vector<2> x) { //ベクトル値関数
+			return Vector<2>{ x[0]*x[1]*x[1], sin(x[0]) * cos(x[1]) };
+		};
+		auto df = [](Vector<2> x) { //ヤコビアン(比較用の解析解)
+			return Matrix<2, 2>{ x[1]*x[1], 2*x[0]*x[1], cos(x[0]) * cos(x[1]), -sin(x[0]) * sin(x[1])};
+		};
+		Vector<2> x{2.0, 3.0};
+		Matrix<2, 2> d1 = jacobianMatrix(f, x);
+		printf("%.20e, %.20e, %.20e, %.20e\n", d1(0, 0), d1(0, 1), d1(1, 0), d1(1, 1));
+		Matrix<2, 2> d2 = df(x);
+		printf("%.20e, %.20e, %.20e, %.20e\n", d2(0, 0), d2(0, 1), d2(1, 0), d2(1, 1));
+	}
+
+	//スカラー値関数のヤコビアン
+	{
+		auto f = [](Vector<2> x) { //スカラー値関数
+			return x[0] * sin(x[1]);
+		};
+		auto df = [](Vector<2> x) { //ヤコビアン(比較用の解析解)
+			return Vector<2>{ sin(x[1]), x[0] * cos(x[1])};
+		};
+		Vector<2> x{2.0, 3.0};
+		Vector<2> d1 = jacobianVector(f, x);
+		printf("%.20e, %.20e\n", d1[0], d1[1]);
+		Vector<2> d2 = df(x);
+		printf("%.20e, %.20e\n", d2[0], d2[1]);
+	}
+
 	return 0;
 }

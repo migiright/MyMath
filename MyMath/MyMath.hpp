@@ -251,4 +251,52 @@ inline double norm(double x)
 	return x;
 }
 
+/// 1変数関数の微分
+template<class Function>
+auto differential(Function function, double variable)
+{
+	double h = 1e-6;
+	while (true) {
+		auto f0 = function(variable - h), d = function(variable + h) - f0;
+		int n;
+		frexp(norm(f0) / norm(d), &n);
+		if (20 <= n && n <= 22) return d / (2*h);
+		h = ldexp(h, n - 21);
+	}
+}
+
+/// ベクトル値関数のヤコビ行列
+template<size_t VariableDimension, class Function>
+auto jacobianMatrix(Function function, Vector<VariableDimension> variable)
+{
+	constexpr size_t FunctionDimension = decltype(function(variable))::Dimension;
+	Matrix<FunctionDimension, VariableDimension> ret;
+	for (size_t i = 0; i < VariableDimension; i++) {
+		auto r = differential([&](double x) {
+			auto v = variable;
+			v[i] = x;
+			return function(v);
+		}, variable[i]);
+		for (size_t j = 0; j < FunctionDimension; j++) {
+			ret(j, i) = r[j];
+		}
+	}
+	return ret;
+}
+
+///　スカラ値関数のヤコビ行列
+template<size_t VariableDimension, class Function>
+auto jacobianVector(Function function, Vector<VariableDimension> variable)
+{
+	Vector<VariableDimension> ret;
+	for (size_t i = 0; i < VariableDimension; i++) {
+		ret[i] = differential([&](double x) {
+			auto v = variable;
+			v[i] = x;
+			return function(v);
+		}, variable[i]);
+	}
+	return ret;
+}
+
 }
