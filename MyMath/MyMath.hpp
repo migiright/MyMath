@@ -11,6 +11,9 @@
 
 namespace MyMath {
 
+/// すべての Matrix のベースクラス。std::is_base_of とかで使う。
+class MatrixBase {};
+
 /**
 * @brief 行列 
 * @tparam H 行数
@@ -18,7 +21,8 @@ namespace MyMath {
 */
 template<size_t H, size_t W>
 class Matrix
-	: boost::multipliable<Matrix<H, W>, double>
+	: MatrixBase
+	, boost::multipliable<Matrix<H, W>, double>
 {
 public:
 	constexpr static size_t Height = H; ///< 行数
@@ -105,13 +109,17 @@ Matrix<AnsHright, AnsWidth> operator*(
 }
 
 
+/// すべての Vector のベースクラス。std::is_base_of とかで使う。
+struct VectorBase {};
+
 /**
 * \brief ベクトル
 * \tparam D 次元
 */
 template<size_t D>
 struct Vector
-	: boost::addable<Vector<D>>
+	: VectorBase
+	, boost::addable<Vector<D>>
 	, boost::subtractable<Vector<D>>
 	, boost::multipliable<Vector<D>, double>
 	, boost::dividable<Vector<D>, double>
