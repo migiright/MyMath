@@ -234,4 +234,21 @@ double dot(const Vector<Dimension> &lhs, const Vector<Dimension> &rhs) {
 	return ret;
 }
 
+/// ノルム
+template<size_t Dimension>
+double norm(const Vector<Dimension> x)
+{
+	double ret = 0;
+	for (size_t i = 0; i < Dimension; i++) {
+		ret += x[i]*x[i];
+	}
+	return sqrt(ret);
+}
+
+/// ノルム
+inline double norm(double x)
+{
+	return x;
+}
+
 }
