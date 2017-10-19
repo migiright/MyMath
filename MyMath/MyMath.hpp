@@ -256,13 +256,17 @@ template<class Function>
 auto differential(Function function, double variable)
 {
 	double h = 1e-6;
-	while (true) {
-		auto f0 = function(variable - h), d = function(variable + h) - f0;
+	decltype(function(variable)) d;
+	for (size_t i = 0; i < 10; i++) {
+		auto f0 = function(variable - h);
+		d = function(variable + h) - f0;
 		int n;
 		frexp(norm(f0) / norm(d), &n);
 		if (20 <= n && n <= 22) return d / (2*h);
 		h = ldexp(h, n - 21);
 	}
+	std::cout << "differential not converged" << std::endl;
+	return d / (2*h);
 }
 
 /// ベクトル値関数のヤコビ行列
