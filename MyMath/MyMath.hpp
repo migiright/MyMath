@@ -123,6 +123,18 @@ public:
 		return *this;
 	}
 
+	///　反数
+	Matrix<Height, Width> operator-()
+	{
+		Matrix<Height, Width> ret;
+		for (size_t r = 0; r < Height; r++) {
+			for (size_t c = 0; c < Width; c++) {
+				ret(r, c) = -(*this)(r, c);
+			}
+		}
+		return ret;
+	}
+
 };
 
 /// 行列同士の乗算
@@ -226,6 +238,15 @@ struct Vector
 			(*this)[i] /= rhs;
 		}
 		return *this;
+	}
+
+	/// 反数
+	Vector<D> operator-() {
+		Vector<D> d;
+		for (size_t i = 0; i < D; i++) {
+			d[i] = -(*this)[i];
+		}
+		return d;
 	}
 
 	/// 整形して文字列として返す
