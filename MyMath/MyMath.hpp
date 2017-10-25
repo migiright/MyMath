@@ -49,6 +49,17 @@ public:
 		: v{args...}
 	{}
 
+	/// 代入演算子
+	Matrix<Height, Width> &operator=(const Matrix<Height, Width> &o) &
+	{
+		for (size_t r = 0; r < Height; r++) {
+			for (size_t c = 0; c < Width; c++) {
+				(*this)(r, c) = o(r, c);
+			}
+		}
+		return *this;
+	}
+
 	/// 要素を返す
 	double& operator()(size_t row, size_t column)
 	{
@@ -141,6 +152,15 @@ struct Vector
 	explicit Vector(const Args &...args)
 		: v{args...}
 	{}
+
+	/// 代入演算子
+	const Vector<Dimension> &operator=(const Vector &o) &
+	{
+		for (size_t i = 0; i < Dimension; i++) {
+			(*this)[i] = o[i];
+		}
+		return *this;
+	}
 
 	/// 要素を返す
 	double& operator[](unsigned index) { return v[index]; }
