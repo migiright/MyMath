@@ -6,15 +6,19 @@ using namespace MyMath;
 
 int main()
 {
-	Matrix<2, 3> m23{1.0, 2.0, 3.0, 4.0, 5.0, 6.0}; //2行3列の行列
+	Matrix<2, 3> m23{1.0, 2.0, 3.0, 4.0, 5.0, 6.0}, m232{2.0, 3.0, 4.0, 5.0, 6.0, 7.0}; //2行3列の行列
 	Matrix<3, 2> m32{1.0, 2.0, 3.0, 4.0, 5.0, 6.0}; //3行2列の行列
 	m23 = m23 * 2; //スカラとの乗算
+	m23 = m23 + m232; //行列同士の加算
+	m23 = m23 - m232; //行列同士の減算
+	m23 = -m23; //反数を取る
 	auto m22 = m23 * m32; //m23とm32の積 2行2列の行列
 	cout << m22.toString() << endl; //行列をいい感じに表示
 
 	Vector<3> v3{1.0, 2.0, 3.0}; //3次元のベクトル
 	v3 = v3 * 2; //スカラとの乗算
 	v3 = v3 / 2; //スカラでの除算
+	v3 = -v3; //反数
 	Vector<3> v32{2.0, 4.0, 6.0};
 	v32 = v3 + v32; //ベクトル同士の加算
 	v32 = v3 - v32; //ベクトル同士の減産
@@ -25,6 +29,11 @@ int main()
 	cout << av2.toString() << endl;
 	cout << dot(v3, v32) << endl; //ベクトル同士の内積
 	cout << norm(v3) << endl; //ノルム
+
+	auto v22 = pickColumn(m23, 0); //列を抜き出す
+	cout << v22.toString() << endl;
+	auto v33 = pickRow(m23, 1); //行を抜き出す
+	cout << v33.toString() << endl;
 
 	//ベクトル値関数のヤコビアン
 	{
@@ -54,6 +63,25 @@ int main()
 		printf("%.20e, %.20e\n", d1[0], d1[1]);
 		Vector<2> d2 = df(x);
 		printf("%.20e, %.20e\n", d2[0], d2[1]);
+	}
+
+	//Lie微分
+	{
+		auto f = [](Vector<2> x){ //ベクトル値関数
+			return Vector<2>{x[0]*x[1], x[0]+x[1]};
+		};
+		auto v = [](Vector<2> x){ //スカラー値関数
+			return x[0]*x[0]*x[1];
+		};
+		auto dv = [](Vector<2> x) { //ヤコビアン(比較用の解析解)
+			return Vector<2>{2*x[0]*x[1], x[0]*x[0]};
+		};
+		auto lfv = [dv, f](Vector<2> x){ //Lie微分(比較用の解析解)
+			return dot(dv(x), f(x));
+		};
+		Vector<2> x{2.0, 3.0};
+		auto l1 = lie(f, v, x), l2 = lfv(x);
+		printf("%.20e, %.20e\n", l1, l2);
 	}
 
 	return 0;
