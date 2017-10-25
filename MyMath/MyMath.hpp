@@ -22,6 +22,8 @@ class MatrixBase {};
 template<size_t H, size_t W>
 class Matrix
 	: MatrixBase
+	, boost::addable<Matrix<H, W>>
+	, boost::subtractable<Matrix<H, W>>
 	, boost::multipliable<Matrix<H, W>, double>
 {
 public:
@@ -86,6 +88,28 @@ public:
 			s += "\n";
 		}
 		return s;
+	}
+
+	/// 行列同士の加算
+	Matrix<Height, Width>& operator+=(const Matrix<Height, Width> &rhs) &
+	{
+		for (size_t r = 0; r < Height; r++) {
+			for (size_t c = 0; c < Width; c++) {
+				(*this)(r, c) += rhs(r, c);
+			}
+		}
+		return *this;
+	}
+
+	/// 行列同士の減算
+	Matrix<Height, Width>& operator-=(const Matrix<Height, Width> &rhs) &
+	{
+		for (size_t r = 0; r < Height; r++) {
+			for (size_t c = 0; c < Width; c++) {
+				(*this)(r, c) -= rhs(r, c);
+			}
+		}
+		return *this;
 	}
 
 	/// スカラとの乗算
