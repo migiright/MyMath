@@ -30,6 +30,11 @@ int main()
 	cout << dot(v3, v32) << endl; //ベクトル同士の内積
 	cout << norm(v3) << endl; //ノルム
 
+	auto v22 = pickColumn(m23, 0); //列を抜き出す
+	cout << v22.toString() << endl;
+	auto v33 = pickRow(m23, 1); //行を抜き出す
+	cout << v33.toString() << endl;
+
 	//ベクトル値関数のヤコビアン
 	{
 		auto f = [](Vector<2> x) { //ベクトル値関数

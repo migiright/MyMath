@@ -316,6 +316,28 @@ inline double norm(double x)
 	return x;
 }
 
+/// Matrixから列を抜き出してVectorにする
+template<size_t Height, size_t Width>
+Vector<Height> pickColumn(const Matrix<Height, Width> &matrix, size_t columnIndex)
+{
+	Vector<Height> ret;
+	for (size_t r = 0; r < Height; r++) {
+		ret[r] = matrix(r, columnIndex);
+	}
+	return ret;
+}
+
+/// 行を抜き出してベクトルにする
+template<size_t Height, size_t Width>
+Vector<Width> pickRow(const Matrix<Height, Width> &matrix, size_t rowIndex)
+{
+	Vector<Width> ret;
+	for (size_t c = 0; c < Width; c++) {
+		ret[c] = matrix(rowIndex, c);
+	}
+	return ret;
+}
+
 /// 微分の微小変位
 constexpr double DefaultDisplacement = 1e-7;
 
