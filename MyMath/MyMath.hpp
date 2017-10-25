@@ -251,27 +251,19 @@ inline double norm(double x)
 	return x;
 }
 
+/// 微分の微小変位
+constexpr double DefaultDisplacement = 1e-7;
+
 /// 1変数関数の微分
 template<class Function>
-auto differential(Function function, double variable)
+auto differential(Function function, double variable, double displacement = DefaultDisplacement)
 {
-	double h = 1e-6;
-	decltype(function(variable)) d;
-	for (size_t i = 0; i < 10; i++) {
-		auto f0 = function(variable - h);
-		d = function(variable + h) - f0;
-		int n;
-		frexp(norm(f0) / norm(d), &n);
-		if (20 <= n && n <= 22) return d / (2*h);
-		h = ldexp(h, n - 21);
-	}
-	std::cout << "differential not converged" << std::endl;
-	return d / (2*h);
+	return (function(variable + displacement) - function(variable - displacement)) / (2*displacement);
 }
 
 /// ベクトル値関数のヤコビ行列
 template<size_t VariableDimension, class Function>
-auto jacobianMatrix(Function function, Vector<VariableDimension> variable)
+auto jacobianMatrix(Function function, Vector<VariableDimension> variable, double displacement = DefaultDisplacement)
 {
 	constexpr size_t FunctionDimension = decltype(function(variable))::Dimension;
 	Matrix<FunctionDimension, VariableDimension> ret;
@@ -280,7 +272,7 @@ auto jacobianMatrix(Function function, Vector<VariableDimension> variable)
 			auto v = variable;
 			v[i] = x;
 			return function(v);
-		}, variable[i]);
+		}, variable[i], displacement);
 		for (size_t j = 0; j < FunctionDimension; j++) {
 			ret(j, i) = r[j];
 		}
@@ -290,7 +282,7 @@ auto jacobianMatrix(Function function, Vector<VariableDimension> variable)
 
 ///　スカラ値関数のヤコビ行列
 template<size_t VariableDimension, class Function>
-auto jacobianVector(Function function, Vector<VariableDimension> variable)
+auto jacobianVector(Function function, Vector<VariableDimension> variable, double displacement = DefaultDisplacement)
 {
 	Vector<VariableDimension> ret;
 	for (size_t i = 0; i < VariableDimension; i++) {
@@ -298,7 +290,7 @@ auto jacobianVector(Function function, Vector<VariableDimension> variable)
 			auto v = variable;
 			v[i] = x;
 			return function(v);
-		}, variable[i]);
+		}, variable[i], displacement);
 	}
 	return ret;
 }
