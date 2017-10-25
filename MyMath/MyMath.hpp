@@ -6,6 +6,7 @@
 #pragma once
 
 #include <array>
+#include <type_traits>
 #include <boost/format.hpp>
 #include <boost/operators.hpp>
 
@@ -380,6 +381,28 @@ auto jacobianVector(Function function, Vector<VariableDimension> variable, doubl
 		}, variable[i], displacement);
 	}
 	return ret;
+}
+
+/// LfVのfがMatrixのときのLie微分
+template<size_t H, class F, class V, class C = std::enable_if_t<
+	std::is_base_of_v<MatrixBase, decltype(std::declval<F>()(MyMath::Vector<H>()))>>>
+	auto lie(F f, V v, const Vector<H> &variable)
+{
+	auto fr = f(variable);
+	Vector<fr.Width> ret;
+	for (size_t i = 0; i < ret.Dimension; i++) {
+		ret[i] = MyMath::differential([&](double x) { return v(variable + x*pickColumn(fr, i)); }, 0);
+	}
+	return ret;
+}
+
+/// LfVのfがVectorのときのLie微分
+template<size_t Dimension, class F, class V, class C = std::enable_if_t<
+	std::is_same_v<decltype(std::declval<F>()(MyMath::Vector<Dimension>())), Vector<Dimension>>>>
+	double lie(F f, V v, const Vector<Dimension> &variable)
+{
+	Vector<Dimension> fr = f(variable);
+	return MyMath::differential([&](double x) { return v(variable + x*fr); }, 0);
 }
 
 }

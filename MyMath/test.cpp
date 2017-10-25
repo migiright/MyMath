@@ -65,5 +65,24 @@ int main()
 		printf("%.20e, %.20e\n", d2[0], d2[1]);
 	}
 
+	//Lie微分
+	{
+		auto f = [](Vector<2> x){ //ベクトル値関数
+			return Vector<2>{x[0]*x[1], x[0]+x[1]};
+		};
+		auto v = [](Vector<2> x){ //スカラー値関数
+			return x[0]*x[0]*x[1];
+		};
+		auto dv = [](Vector<2> x) { //ヤコビアン(比較用の解析解)
+			return Vector<2>{2*x[0]*x[1], x[0]*x[0]};
+		};
+		auto lfv = [dv, f](Vector<2> x){ //Lie微分(比較用の解析解)
+			return dot(dv(x), f(x));
+		};
+		Vector<2> x{2.0, 3.0};
+		auto l1 = lie(f, v, x), l2 = lfv(x);
+		printf("%.20e, %.20e\n", l1, l2);
+	}
+
 	return 0;
 }
