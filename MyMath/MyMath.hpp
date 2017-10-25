@@ -78,7 +78,7 @@ public:
 	}
 
 	/// スカラとの乗算
-	Matrix<Height, Width>& operator*=(double rhs)
+	Matrix<Height, Width>& operator*=(double rhs) &
 	{
 		for (size_t r = 0; r < Height; ++r) {
 			for (size_t c = 0; c < Width; ++c) {
@@ -149,7 +149,7 @@ struct Vector
 	const double& operator[](unsigned index) const { return v[index]; }
 
 	/// 加算
-	Vector<D>& operator+=(const Vector<D>& rhs)
+	Vector<D>& operator+=(const Vector<D>& rhs) &
 	{
 		for (size_t i = 0; i < D; i++) {
 			v[i] += rhs[i];
@@ -158,7 +158,7 @@ struct Vector
 	}
 
 	/// 減算
-	Vector<D>& operator-=(const Vector<D>& rhs)
+	Vector<D>& operator-=(const Vector<D>& rhs) &
 	{
 		for (size_t i = 0; i < D; i++) {
 			v[i] -= rhs[i];
@@ -167,7 +167,7 @@ struct Vector
 	}
 
 	/// スカラとの乗算
-	Vector<D>& operator*=(double rhs)
+	Vector<D>& operator*=(double rhs) &
 	{
 		for (size_t i = 0; i < D; ++i) {
 			(*this)[i] *= rhs;
@@ -176,7 +176,7 @@ struct Vector
 	}
 
 	/// スカラでの除算
-	Vector<D>& operator/=(double rhs)
+	Vector<D>& operator/=(double rhs) &
 	{
 		for (size_t i = 0; i < D; ++i) {
 			(*this)[i] /= rhs;
