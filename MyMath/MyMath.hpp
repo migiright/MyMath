@@ -1,6 +1,6 @@
 ﻿/**
 * \file MyMath.hpp
-* \version 1.4
+* \version 1.4.1
 */
 
 #pragma once
